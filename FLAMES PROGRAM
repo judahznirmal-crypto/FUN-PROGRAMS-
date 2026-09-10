@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main()
+{
+    char name1[50], name2[50];
+    char flames[] = "FLAMES";
+    int i, j, count = 0;
+    int len = 6, pos = 0;
+
+    printf("Enter first name (end with .): ");
+    scanf(" %49[^.]", name1);
+    getchar(); // Consume the trailing '.'
+
+    printf("Enter second name (end with .): ");
+    scanf(" %49[^.]", name2);
+    getchar(); // Consume the trailing '.'
+
+    // Convert names to lowercase
+    for (i = 0; name1[i] != '\0'; i++)
+        name1[i] = tolower((unsigned char)name1[i]);
+
+    for (i = 0; name2[i] != '\0'; i++)
+        name2[i] = tolower((unsigned char)name2[i]);
+
+    // Find and cancel common letters (ignoring spaces)
+    for (i = 0; name1[i] != '\0'; i++)
+    {
+        if (name1[i] == ' ' || name1[i] == '*') continue;
+
+        for (j = 0; name2[j] != '\0'; j++)
+        {
+            if (name1[i] == name2[j])
+            {
+                name1[i] = '*';
+                name2[j] = '*';
+                break;
+            }
+        }
+    }
+
+    // Count remaining letters (excluding spaces and cancelled characters)
+    for (i = 0; name1[i] != '\0'; i++)
+    {
+        if (name1[i] != '*' && name1[i] != ' ')
+            count++;
+    }
+
+    for (i = 0; name2[i] != '\0'; i++)
+    {
+        if (name2[i] != '*' && name2[i] != ' ')
+            count++;
+    }
+
+    // FLAMES calculation
+    while (len > 1)
+    {
+        pos = (pos + count - 1) % len;
+
+        for (i = pos; i < len - 1; i++)
+        {
+            flames[i] = flames[i + 1];
+        }
+
+        len--;
+    }
+
+    printf("\nFLAMES Result: ");
+
+    if (flames[0] == 'F')
+        printf("Friends");
+    else if (flames[0] == 'L')
+        printf("Lovers");
+    else if (flames[0] == 'A')
+        printf("Affection");
+    else if (flames[0] == 'M')
+        printf("Marriage");
+    else if (flames[0] == 'E')
+        printf("Enemies");
+    else if (flames[0] == 'S')
+        printf("Siblings");
+
+    printf("\n");
+    return 0;
+}
